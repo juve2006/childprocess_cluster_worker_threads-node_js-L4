@@ -46,16 +46,13 @@ if (cluster.isMaster) {
             console.log(`Worker ${process.pid} started`);
         });
 
-        cluster.on('fork', (worker) => {
-            console.log('worker is dead:', worker.isDead());
-        });
     }
 } else {
     http.createServer((req, res) => {
         console.log(`Worker ${process.pid}: WORKED`);
         res.writeHead(200);
         res.end('hello world');
-    }).listen(8000);
+    }).listen(3000);
 
     console.log(`Worker ${process.pid} started`);
 }

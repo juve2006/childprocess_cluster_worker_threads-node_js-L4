@@ -27,7 +27,7 @@
 
 const cluster = require('cluster');
 const http = require('http');
-const os = require('os');
+const os = require('os')
 
 if (cluster.isMaster) {
     const cpusCount = os.cpus().length;
@@ -37,26 +37,20 @@ if (cluster.isMaster) {
     // Fork workers.
     for (let i = 0; i < cpusCount; i++) {
         const worker = cluster.fork();
-        
 
         worker.on('exit', (worker, code, signal) => {
             console.log(`worker ${worker.process.pid} died`);
-            console.log('Starting a new worker....');
-            cluster.fork();
-            console.log(`Worker ${process.pid} started`);
-        });
-
-        cluster.on('fork', (worker) => {
-            console.log('worker is dead:', worker.isDead());
         });
     }
+
+    console.log(cluster.workers);
 } else {
     http.createServer((req, res) => {
         console.log(`Worker ${process.pid}: WORKED`);
+
         res.writeHead(200);
         res.end('hello world');
-    }).listen(8000);
+    }).listen(6000);
 
     console.log(`Worker ${process.pid} started`);
 }
-
